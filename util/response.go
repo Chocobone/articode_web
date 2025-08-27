@@ -38,8 +38,8 @@ func RespondNotFound(c *gin.Context, message string) {
 }
 
 //500 Interval Server Error
-func RespondIntervalServerError(c *gin.Context, message string) {
-	c.JSON(http.StatusIntervalServerError, gin.H{
+func RespondInternalError(c *gin.Context, message string) {
+	c.JSON(http.StatusInternalServerError, gin.H{
 		"success":	false,
 		"error":	message,
 	})
