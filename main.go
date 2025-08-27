@@ -2,13 +2,18 @@ package main
 
 import (
 	"fmt"
-	"log"
+	// "log"
 	"net/http"
-	"os"
+	// "os"
 
 	"github.com/gin-gonic/gin" //gin framework
-	"github.com/joho/godotenv" //local variable on .env files
+	//"github.com/joho/godotenv" //local variable on .env files
 	httpSwagger "github.com/swaggo/http-swagger" //auto-API docs writter
+
+	dbConfig "github.com/Chocobone/articode_web/v2/db/config"
+	"github.com/Chocobone/articode_web/v2/user"
+	userRepository "github.com/Chocobone/articode_web/v2/user/repository"
+
 )
 
 func StatusHandler(c *gin.Context) {
@@ -23,13 +28,13 @@ var (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("ERROR: .env file NOT FOUND")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Println("ERROR: .env file NOT FOUND")
+	// }
 
-	fmt.Println("CLIENT_ID:", os.Getenv("CLIENT_ID"))
-	fmt.Println("CLIENT_SECRET:", os.Getenv("CLIENT_SECRET"))
+	fmt.Println("CLIENT_ID: test")//, os.Getenv("CLIENT_ID"))
+	fmt.Println("CLIENT_SECRET: test")//, os.Getenv("CLIENT_SECRET"))
 
 	dbConfig.InitMongo()
 
@@ -53,11 +58,11 @@ func main() {
 	// Swagger
 	r.GET("/swagger/*any", gin.WrapH(httpSwagger.Handler()))
 
-	// userRepo := userRepository.NewUserRepository()
-	// situationRepo := situationRepository.NewSituationRepository()
-	// favoriteService := favorite.NewFavoriteService(userRepo, situationRepo)
-	// favoriteHandler := favorite.NewFavoriteHandler(favoriteService)
-	// favorite.RegisterFavoriteRoutes(r, favoriteHandler)
+	userRepo := userRepository.NewUserRepository()
+
+	userService := user.NewUserService(userRepo)
+	userHandler := user.NewUserHandler(userService)
+	user.RegisterUserRoutes(r, userHandler)
 
 	// start the server
 	serverAddress := host + ":" + port
