@@ -1,6 +1,7 @@
 package model
 
 import (
+	"time"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 type Modeling3D struct {
@@ -14,4 +15,6 @@ type Modeling3D struct {
     ThumbnailURL *string            `bson:"thumbnail_url,omitempty" json:"thumbnail_url,omitempty"`
     Category     *string            `bson:"category,omitempty" json:"category,omitempty"`
     Description  *string            `bson:"description,omitempty" json:"description,omitempty"`
+	CreatedAt    time.Time 			`bson:"created_at" json:"created_at"`
+    UpdatedAt    time.Time 			`bson:"updated_at" json:"updated_at"`
 }
