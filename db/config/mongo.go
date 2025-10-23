@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,13 +15,13 @@ var Client *mongo.Client
 var UserCollection *mongo.Collection
 
 func InitMongo() {
-	uri := os.Getenv("MONGO_URI")
+	uri := "mongodb://localhost:27017" //os.Getenv("MONGO_URI")
 	if uri == "" {
 		log.Fatal("ERROR: 'MONGO_URI' is NOT set.")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-    defer cancel()
+	defer cancel()
 
 	clientOptions := options.Client().ApplyURI(uri)
 
