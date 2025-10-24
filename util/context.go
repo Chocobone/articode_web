@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 
-	dbConfig "github.com/Chocobone/articode_web/v2/db/config"
-	"github.com/Chocobone/articode_web/v2/db/model"
+	dbConfig "github.com/chocobone/articode_web/db/config"
+	"github.com/chocobone/articode_web/db/model"
 )
 
 

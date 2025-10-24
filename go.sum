@@ -1,5 +1,3 @@
-github.com/Chocobone/articode_web/v2 v2.0.0-20251023085506-0e0c999a094d h1:ZHgVlwDlVfsvQlA04Atg34tvMRUREz2cuOk8ESQCwLU=
-github.com/Chocobone/articode_web/v2 v2.0.0-20251023085506-0e0c999a094d/go.mod h1:/YleYfxeNRzmSzC9pUOu3uGG3ZMEVMkH4g31cOTutMU=
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
 github.com/bytedance/sonic v1.14.0 h1:/OfKt8HFw0kh2rj8N0F6C/qPGRESq0BbaNZgcNXXzQQ=

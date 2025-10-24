@@ -3,7 +3,6 @@ module github.com/chocobone/articode_web
 go 1.25.3
 
 require (
-	github.com/Chocobone/articode_web/v2 v2.0.0-20251023085506-0e0c999a094d
 	github.com/gin-gonic/gin v1.11.0
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.6

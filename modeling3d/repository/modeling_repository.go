@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/Chocobone/articode_web/v2/db/model"
+	"github.com/chocobone/articode_web/db/model"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

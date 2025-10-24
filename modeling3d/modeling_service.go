@@ -3,7 +3,7 @@ package modeling3d
 import (
 	"errors"
 
-	"github.com/Chocobone/articode_web/v2/db/model"
+	"github.com/chocobone/articode_web/db/model"
 )
 
 type ModelingService struct {

@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 
-	dbConfig "github.com/Chocobone/articode_web/v2/db/config"
-	
+	dbConfig "github.com/chocobone/articode_web/db/config"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -14,9 +14,9 @@ type UserRepositoryMongo struct {
 }
 
 type UserInfoResponse struct {
-	UserID		int	   `bson:"user_id"`
-	Name        string `bson:"name"`
-	Email       string `bson:"email"`
+	UserID int    `bson:"user_id"`
+	Name   string `bson:"name"`
+	Email  string `bson:"email"`
 }
 
 func NewUserRepository() UserRepository {
@@ -34,3 +34,21 @@ func (r *UserRepositoryMongo) GetUserInfo(ctx context.Context, userID int) (*Use
 	return &userInfoResponse, nil
 }
 
+func (r *UserRepositoryMongo) PostUserInfo(ctx context.Context, user *UserInfoResponse) (*UserInfoResponse, error) {
+	_, err := r.collection.InsertOne(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (r *UserRepositoryMongo) DeleteUserInfo(ctx context.Context, userID int) error {
+	res, err := r.collection.DeleteOne(ctx, bson.M{"user_id": userID})
+	if err != nil {
+		return err
+	}
+	if res.DeletedCount == 0 {
+		return mongo.ErrNoDocuments
+	}
+	return nil
+}

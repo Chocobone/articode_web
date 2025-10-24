@@ -10,15 +10,15 @@ import (
 	//"github.com/joho/godotenv" //local variable on .env files
 	httpSwagger "github.com/swaggo/http-swagger" //auto-API docs writter
 
-	db "github.com/Chocobone/articode_web/v2/db"
+	db "github.com/chocobone/articode_web/db/config"
 
 	// ---- User API ---- //
-	"github.com/Chocobone/articode_web/v2/user"
-	userRepository "github.com/Chocobone/articode_web/v2/user/repository"
+	"github.com/chocobone/articode_web/user"
+	userRepository "github.com/chocobone/articode_web/user/repository"
 
 	// ---- 3D API ---- //
-	"github.com/Chocobone/articode_web/v2/modeling3d"
-	modelingRepository "github.com/Chocobone/articode_web/v2/modeling3d/repository"
+	"github.com/chocobone/articode_web/modeling3d"
+	modelingRepository "github.com/chocobone/articode_web/modeling3d/repository"
 )
 
 func StatusHandler(c *gin.Context) {
@@ -41,7 +41,7 @@ func main() {
 	fmt.Println("CLIENT_ID: test")     //, os.Getenv("CLIENT_ID"))
 	fmt.Println("CLIENT_SECRET: test") //, os.Getenv("CLIENT_SECRET"))
 
-	db.Config.InitMongo()
+	db.InitMongo()
 
 	r := gin.Default()
 	r.Static("/static", "./")
@@ -67,7 +67,7 @@ func main() {
 	userRepo := userRepository.NewUserRepository()
 	userService := user.NewUserService(userRepo)
 	userHandler := user.NewUserHandler(userService)
-	user.RegisterUserRoutes(r, userHandler)
+	user.GetUserRoutes(r, userHandler)
 
 	// 3D Modeling route
 	modelingCollection := db.Collection("modeling3d")

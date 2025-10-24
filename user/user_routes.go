@@ -4,11 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterUserRoutes(r *gin.Engine, userHandler *UserHandler) {
+func GetUserRoutes(r *gin.Engine, userHandler *UserHandler) {
 	//user routes
-	r.GET("/api/users/myinfo", userHandler.GetUserInfo)
+	r.GET("/api/users/", userHandler.GetUserInfo)
 }
 
-func NewUserRoutes(r *gin.Engine, userHandler *UserHandler) {
-	r.POST("/api/users/new", userHandler.NewUserService)
+func PostUserRoutes(r *gin.Engine, userHandler *UserHandler) {
+	r.POST("/api/users/", userHandler.PostUserInfo)
+}
+
+func DeleteUserRoutes(r *gin.Engine, userHandler *UserHandler) {
+	r.DELETE("/api/users/", userHandler.DeleteUserInfo)
 }

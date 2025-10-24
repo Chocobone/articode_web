@@ -3,8 +3,8 @@ package modeling3d
 import (
 	"time"
 
-	"github.com/Chocobone/articode_web/v2/db/model"
-	"github.com/Chocobone/articode_web/v2/util"
+	"github.com/chocobone/articode_web/db/model"
+	"github.com/chocobone/articode_web/util"
 	"github.com/gin-gonic/gin"
 )
 
