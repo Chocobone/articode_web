@@ -1,12 +1,11 @@
 package modeling3d
 
 import (
-    "encoding/json"
-    "net/http"
-    "time"
+	"time"
 
-    "github.com/Chocobone/articode_web/v2/db/model"
-    "github.com/Chocobone/articode_web/v2/util"
+	"github.com/Chocobone/articode_web/v2/db/model"
+	"github.com/Chocobone/articode_web/v2/util"
+	"github.com/gin-gonic/gin"
 )
 
 type ModelingHandler struct {
@@ -14,10 +13,11 @@ type ModelingHandler struct {
 }
 
 // 3D Model Saving/Addition
-func (h *ModelingHandler) CreateModel(w http.ResponseWriter, r *http.Request) {
+func (h *ModelingHandler) CreateModel(c *gin.Context) {
+
 	var newModel model.Modeling3D
-	if err := json.NewDecoder(r.Body).Decode(&newModel); err != nil {
-		util.RespondWithError(w, http.StatusBadRequest, "Invalid request body")
+	if err := c.ShouldBindJSON(&newModel); err != nil {
+		util.RespondBadRequest(c, "Invalid request body")
 		return
 	}
 
@@ -28,12 +28,12 @@ func (h *ModelingHandler) CreateModel(w http.ResponseWriter, r *http.Request) {
 	// Calling Service hierarchy
 	insertedModel, err := h.Service.CreateModel(newModel)
 	if err != nil {
-		util.RespondWithError(w, http.StatusInternalServerError, "Failed to save 3D model")
+		util.RespondInternalError(c, "Failed to save 3D model")
 		return
 	}
 
 	// Success
-	util.RespondWithJSON(w, http.StatusCreated, map[string]interface{}{
+	util.RespondSuccess(c, map[string]interface{}{
 		"status": "success",
 		"model": map[string]interface{}{
 			"id":           insertedModel.ID.Hex(),

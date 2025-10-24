@@ -10,16 +10,15 @@ import (
 	//"github.com/joho/godotenv" //local variable on .env files
 	httpSwagger "github.com/swaggo/http-swagger" //auto-API docs writter
 
-	dbConfig "github.com/Chocobone/articode_web/v2/db/config"
+	db "github.com/Chocobone/articode_web/v2/db"
 
 	// ---- User API ---- //
 	"github.com/Chocobone/articode_web/v2/user"
 	userRepository "github.com/Chocobone/articode_web/v2/user/repository"
 
 	// ---- 3D API ---- //
-	modelingRepository "github.com/Chocobone/articode_web/v2/repository"
-	modelingService "github.com/Chocobone/articode_web/v2/service"
-	modelingHandler "github.com/Chocobone/articode_web/v2/handler"
+	"github.com/Chocobone/articode_web/v2/modeling3d"
+	modelingRepository "github.com/Chocobone/articode_web/v2/modeling3d/repository"
 )
 
 func StatusHandler(c *gin.Context) {
@@ -39,15 +38,15 @@ func main() {
 	// 	log.Println("ERROR: .env file NOT FOUND")
 	// }
 
-	fmt.Println("CLIENT_ID: test")//, os.Getenv("CLIENT_ID"))
-	fmt.Println("CLIENT_SECRET: test")//, os.Getenv("CLIENT_SECRET"))
+	fmt.Println("CLIENT_ID: test")     //, os.Getenv("CLIENT_ID"))
+	fmt.Println("CLIENT_SECRET: test") //, os.Getenv("CLIENT_SECRET"))
 
-	dbConfig.InitMongo()
+	db.Config.InitMongo()
 
 	r := gin.Default()
 	r.Static("/static", "./")
 
-	r.Use(func(c *gin.Context){
+	r.Use(func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS")
 		c.Header("Access-Control-Allow-Headers", "*")
@@ -73,13 +72,13 @@ func main() {
 	// 3D Modeling route
 	modelingCollection := db.Collection("modeling3d")
 	modelRepo := &modelingRepository.ModelingRepository{Collection: modelingCollection}
-	modelService := modelingService.NewModelingService(modelRepo)
-	modelHandler := modelingHandler.NewModelingHandler(modelService)
+	modelService := modeling3d.NewModelingService(modelRepo)
+	modelHandler := modeling3d.NewModelingHandler(modelService)
 
 	api3d := r.Group("/api/users/3d")
 	{
-		api3d.POST("", modelHandler.InsertModelHandler)     // 3D 모델 추가
-		api3d.GET("", modelHandler.GetModelListHandler)     // 3D 모델 목록
+		api3d.POST("", modelHandler.InsertModelHandler)       // 3D 모델 추가
+		api3d.GET("", modelHandler.GetModelListHandler)       // 3D 모델 목록
 		api3d.DELETE("/:id", modelHandler.DeleteModelHandler) // 3D 모델 삭제
 	}
 

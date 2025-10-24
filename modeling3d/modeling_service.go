@@ -11,7 +11,7 @@ type ModelingService struct {
 }
 
 func (s *ModelingService) CreateModel(newModel model.Modeling3D) (*model.Modeling3D, error) {
-	// Required Parameters validation 
+	// Required Parameters validation
 	if newModel.LessorID == "" || newModel.Title == "" || newModel.Address == "" || newModel.USDZFileURL == "" {
 		return nil, errors.New("missing required fields")
 	}

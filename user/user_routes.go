@@ -10,5 +10,5 @@ func RegisterUserRoutes(r *gin.Engine, userHandler *UserHandler) {
 }
 
 func NewUserRoutes(r *gin.Engine, userHandler *UserHandler) {
-	r.GET("/api/users/new", userHandler.NewUserHandler)
+	r.POST("/api/users/new", userHandler.NewUserService)
 }
