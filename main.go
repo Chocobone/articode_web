@@ -70,8 +70,12 @@ func main() {
 	user.GetUserRoutes(r, userHandler)
 
 	// 3D Modeling route
-	modelingCollection := db.Collection("modeling3d")
-	modelRepo := &modelingRepository.ModelingRepository{Collection: modelingCollection}
+	// modelingCollection := db.Collection("modeling3d")
+	// modelRepo := &modelingRepository.ModelingRepository{Collection: modelingCollection}
+	// modelService := modeling3d.NewModelingService(modelRepo)
+	// modelHandler := modeling3d.NewModelingHandler(modelService)
+
+	modelRepo := modelingRepository.NewModelingRepository()
 	modelService := modeling3d.NewModelingService(modelRepo)
 	modelHandler := modeling3d.NewModelingHandler(modelService)
 

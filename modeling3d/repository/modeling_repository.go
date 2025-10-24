@@ -1,28 +1,16 @@
-package modeling3d
+package repository
 
 import (
 	"context"
-	"time"
-
-	"github.com/chocobone/articode_web/db/model"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type ModelingRepository struct {
-	Collection *mongo.Collection
-}
+type ModelingRepository interface {
+	//Modeling methods
+	GetModelingInfo(ctx context.Context, ModelingID int) (*ModelingInfoResponse, error)
 
-// Adding 3d Model to MongoDB
-func (r *ModelingRepository) InsertModel(newModel model.Modeling3D) (*model.Modeling3D, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	//add Modeling's model
+	PostModelingInfo(ctx context.Context, Modeling *ModelingInfoResponse) (*ModelingInfoResponse, error)
 
-	result, err := r.Collection.InsertOne(ctx, newModel)
-	if err != nil {
-		return nil, err
-	}
-
-	newModel.ID = result.InsertedID.(primitive.ObjectID)
-	return &newModel, nil
+	// delete Modeling info
+	DeleteModelingInfo(ctx context.Context, ModelingID int) error
 }

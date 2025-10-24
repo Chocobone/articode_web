@@ -1,19 +1,22 @@
 package modeling3d
 
 import (
-	"time"
-
 	"github.com/chocobone/articode_web/db/model"
 	"github.com/chocobone/articode_web/util"
 	"github.com/gin-gonic/gin"
 )
 
 type ModelingHandler struct {
-	Service *ModelingService
+	service *ModelingService
 }
 
-// 3D Model Saving/Addition
+func NewModelingHandler(service *ModelingService) *ModelingHandler {
+	return &ModelingHandler{service: service}
+}
+
+// POST /api/models
 func (h *ModelingHandler) CreateModel(c *gin.Context) {
+	ctx := c.Request.Context()
 
 	var newModel model.Modeling3D
 	if err := c.ShouldBindJSON(&newModel); err != nil {
@@ -21,23 +24,88 @@ func (h *ModelingHandler) CreateModel(c *gin.Context) {
 		return
 	}
 
-	// Recording Creating&Updating time
-	newModel.CreatedAt = time.Now()
-	newModel.UpdatedAt = time.Now()
-
-	// Calling Service hierarchy
-	insertedModel, err := h.Service.CreateModel(newModel)
+	created, err := h.service.CreateModel(newModel)
 	if err != nil {
-		util.RespondInternalError(c, "Failed to save 3D model")
+		util.RespondInternalError(c, err.Error())
 		return
 	}
 
-	// Success
-	util.RespondSuccess(c, map[string]interface{}{
-		"status": "success",
-		"model": map[string]interface{}{
-			"id":           insertedModel.ID.Hex(),
-			"glb_file_url": insertedModel.GLBFileURL,
-		},
-	})
+	util.RespondSuccess(c, created)
 }
+
+// GET /api/models/:id
+func (h *ModelingHandler) GetModelingInfo(c *gin.Context) {
+	ctx := c.Request.Context()
+	id := c.Param("id")
+	if id == "" {
+		util.RespondBadRequest(c, "Bad Request")
+		return
+	}
+
+	m, err := h.service.GetModelingInfo(ctx, id)
+	if err != nil {
+		util.RespondInternalError(c, err.Error())
+		return
+	}
+
+	util.RespondSuccess(c, m)
+}
+
+// DELETE /api/models/:id
+func (h *ModelingHandler) DeleteModelingInfo(c *gin.Context) {
+	ctx := c.Request.Context()
+	id := c.Param("id")
+	if id == "" {
+		util.RespondBadRequest(c, "Bad Request")
+		return
+	}
+
+	if err := h.service.DeleteModelingInfo(ctx, id); err != nil {
+		util.RespondInternalError(c, err.Error())
+		return
+	}
+
+	util.RespondSuccess(c, gin.H{"deleted": true})
+}
+
+// import (
+// 	"time"
+
+// 	"github.com/chocobone/articode_web/db/model"
+// 	"github.com/chocobone/articode_web/util"
+// 	"github.com/gin-gonic/gin"
+// )
+
+// type ModelingHandler struct {
+// 	Service *ModelingService
+// }
+
+// // 3D Model Saving/Addition
+// func (h *ModelingHandler) CreateModel(c *gin.Context) {
+
+// 	var newModel model.Modeling3D
+// 	if err := c.ShouldBindJSON(&newModel); err != nil {
+// 		util.RespondBadRequest(c, "Invalid request body")
+// 		return
+// 	}
+
+// 	// Recording Creating&Updating time
+// 	newModel.CreatedAt = time.Now()
+// 	newModel.UpdatedAt = time.Now()
+
+// 	// Calling Service hierarchy
+// 	insertedModel, err := h.Service.CreateModel(newModel)
+// 	if err != nil {
+// 		util.RespondInternalError(c, "Failed to save 3D model")
+// 		return
+// 	}
+
+// 	// Success
+// 	util.RespondSuccess(c, map[string]interface{}{
+// 		"status": "success",
+// 		"model": map[string]interface{}{
+// 			"id":           insertedModel.ID.Hex(),
+// 			"glb_file_url": insertedModel.GLBFileURL,
+// 		},
+// 	})
+// }
