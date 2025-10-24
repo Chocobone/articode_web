@@ -28,8 +28,8 @@ func StatusHandler(c *gin.Context) {
 }
 
 var (
-	host = "0.0.0.0"
-	port = os.Getenv("PORT") //for CLOUD RUN
+	host = "localhost"
+	port = "6100"
 )
 
 func main() {
@@ -41,7 +41,6 @@ func main() {
 	fmt.Println("Client_ID=", os.Getenv("CLIENT_ID"))
 	fmt.Println("Client_ID=", os.Getenv("CLIENT_SECRET"))
 
-	//mongodb://<username>:<password>@<host>:<port>/<database>?authSource=admin
 	db.InitMongo()
 
 	r := gin.Default()
