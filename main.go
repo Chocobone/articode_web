@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	// "log"
+	"log"
 	"net/http"
-	// "os"
+	"os"
 
-	"github.com/gin-gonic/gin" //gin framework
-	//"github.com/joho/godotenv" //local variable on .env files
+	"github.com/gin-gonic/gin"                   //gin framework
+	"github.com/joho/godotenv"                   //local variable on .env files
 	httpSwagger "github.com/swaggo/http-swagger" //auto-API docs writter
 
 	db "github.com/chocobone/articode_web/db/config"
@@ -33,12 +33,12 @@ var (
 )
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Println("ERROR: .env file NOT FOUND")
-	// }
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("ERROR: .env file NOT FOUND")
+	}
 
-	fmt.Println("CLIENT_ID: test")     //, os.Getenv("CLIENT_ID"))
+	os.Getenv("CLIENT_ID")
 	fmt.Println("CLIENT_SECRET: test") //, os.Getenv("CLIENT_SECRET"))
 
 	db.InitMongo()
