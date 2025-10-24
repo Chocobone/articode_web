@@ -38,9 +38,10 @@ func main() {
 		log.Println("ERROR: .env file NOT FOUND")
 	}
 
-	os.Getenv("CLIENT_ID")
-	fmt.Println("CLIENT_SECRET: test") //, os.Getenv("CLIENT_SECRET"))
+	fmt.Println("Client_ID=", os.Getenv("CLIENT_ID"))
+	fmt.Println("Client_ID=", os.Getenv("CLIENT_SECRET"))
 
+	//mongodb://<username>:<password>@<host>:<port>/<database>?authSource=admin
 	db.InitMongo()
 
 	r := gin.Default()

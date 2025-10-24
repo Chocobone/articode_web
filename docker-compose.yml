@@ -1,5 +1,26 @@
 version : '3.7'
 services:
+  backend:
+    image: backend
+    build:
+      args:
+        - target=dev
+    environment:
+      ENV: dev
+      PORT: 6100
+      DB_HOST: mongodb
+      DB_PORT: 27017
+    volumes:
+      - .:/app
+    ports:
+      - "6100:6100"
+    expose:
+      - "6100"
+    depends_on:
+      - mongodb
+    networks:
+      - articode_network
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -11,3 +32,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
+    networks:
+      - articode_network
+
+networks:
+  articode_network:
