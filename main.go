@@ -78,13 +78,7 @@ func main() {
 	modelRepo := modelingRepository.NewModelingRepository()
 	modelService := modeling3d.NewModelingService(modelRepo)
 	modelHandler := modeling3d.NewModelingHandler(modelService)
-
-	api3d := r.Group("/api/users/3d")
-	{
-		api3d.POST("", modelHandler.InsertModelHandler)       // 3D 모델 추가
-		api3d.GET("", modelHandler.GetModelListHandler)       // 3D 모델 목록
-		api3d.DELETE("/:id", modelHandler.DeleteModelHandler) // 3D 모델 삭제
-	}
+	modeling3d.GetModelRoutes(r, modelHandler)
 
 	// start the server
 	serverAddress := host + ":" + port

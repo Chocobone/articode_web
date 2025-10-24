@@ -13,6 +13,7 @@ import (
 var Client *mongo.Client
 
 var UserCollection *mongo.Collection
+var ModelingCollection *mongo.Collection
 
 func InitMongo() {
 	uri := "mongodb://localhost:27017" //os.Getenv("MONGO_URI")
@@ -41,4 +42,5 @@ func InitMongo() {
 	//initialize collection
 	UserCollection = Client.Database("resq").Collection("users")
 	//add collection if struct added
+	ModelingCollection = Client.Database("resq").Collection("3D_Modeling")
 }
