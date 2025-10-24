@@ -28,8 +28,8 @@ func StatusHandler(c *gin.Context) {
 }
 
 var (
-	host = "localhost"
-	port = "6100"
+	host = "0.0.0.0"
+	port = os.Getenv("PORT") //for CLOUD RUN
 )
 
 func main() {
