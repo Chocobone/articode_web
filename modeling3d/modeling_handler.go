@@ -38,13 +38,13 @@ func (h *ModelingHandler) PostModelingInfo(c *gin.Context) {
 
 	var newModel repository.ModelingInfoResponse
 	if err := c.ShouldBindJSON(&newModel); err != nil {
-		util.RespondBadRequest(c, "Invalid request body")
+		util.RespondBadRequest(c, "Invalid request body") // 400
 		return
 	}
 
 	created, err := h.service.PostModelingInfo(ctx, &newModel)
 	if err != nil {
-		util.RespondInternalError(c, err.Error())
+		util.RespondInternalError(c, err.Error()) // 500
 		return
 	}
 

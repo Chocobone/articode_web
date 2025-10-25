@@ -17,32 +17,21 @@ func NewModelingService(repo repository.ModelingRepository) *ModelingService {
 	}
 	return &ModelingService{repo: repo}
 }
-
-// 준형햄한테 물어보기 / POST metohd
-// func (s *ModelingService) PostModelingInfo(newModel repository.ModelingInfoResponse) (*repository.ModelingInfoResponse, error) {
-// 	ctx = c.Context
-// 	// Required Parameters validation
-// 	if newModel.LessorID == "" || newModel.Title == "" || newModel.Address == "" || newModel.USDZFileURL == "" {
-// 		return nil, errors.New("missing required fields")
-// 	}
-
-// 	// GLB File conversion logic
-
-// 	// Saving to DB
-// 	insertedModel, err := s.repo.PostModelingInfo(newModel) //POST
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return insertedModel, nil
-// }
-
+	
 func (s *ModelingService) GetModelingInfo(ctx context.Context, modelingID string) (*repository.ModelingInfoResponse, error) {
 	return s.repo.GetModelingInfo(ctx, modelingID)
 }
 
 func (s *ModelingService) PostModelingInfo(ctx context.Context, modeling *repository.ModelingInfoResponse) (*repository.ModelingInfoResponse, error) {
-	return s.repo.PostModelingInfo(ctx, modeling)
+	if newModel.LessorID == "" || newModel.Title == "" || newModel.Address == "" || newModel.GLBFileURL == "" {
+		return nil, errors.New("missing required fields")
+	}
+	
+	// Saving to DB
+	insertModel, err := s.repo.PostModelingInfo(ctx, modeling)
+	if err != nil { return nil, err }
+
+	return insertModel, nil
 }
 
 func (s *ModelingService) DeleteModelingInfo(ctx context.Context, modelingID string) error {
