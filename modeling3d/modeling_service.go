@@ -18,12 +18,12 @@ func NewModelingService(repo repository.ModelingRepository) *ModelingService {
 	return &ModelingService{repo: repo}
 }
 	
-func (s *ModelingService) GetModelingInfo(ctx context.Context, modelingID string) (*repository.ModelingInfoResponse, error) {
-	return s.repo.GetModelingInfo(ctx, modelingID)
+func (s *ModelingService) GetModelingInfo(ctx context.Context, title, address, category string) ([]*repository.ModelingInfoResponse, error) {
+	return s.repo.GetModelingInfo(ctx, title, address, category)
 }
 
 func (s *ModelingService) PostModelingInfo(ctx context.Context, modeling *repository.ModelingInfoResponse) (*repository.ModelingInfoResponse, error) {
-	if newModel.LessorID == "" || newModel.Title == "" || newModel.Address == "" || newModel.GLBFileURL == "" {
+	if modeling.LessorID == "" || modeling.Title == "" || modeling.Address == "" || newModel.GLBFileURL == "" {
 		return nil, errors.New("missing required fields")
 	}
 	
@@ -34,6 +34,6 @@ func (s *ModelingService) PostModelingInfo(ctx context.Context, modeling *reposi
 	return insertModel, nil
 }
 
-func (s *ModelingService) DeleteModelingInfo(ctx context.Context, modelingID string) error {
-	return s.repo.DeleteModelingInfo(ctx, modelingID)
+func (s *ModelingService) DeleteModelingInfo(ctx context.Context, modelingID string, userID string) error {
+	return s.repo.DeleteModelingInfo(ctx, modelingID, userID)
 }

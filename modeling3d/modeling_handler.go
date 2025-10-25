@@ -17,19 +17,20 @@ func NewModelingHandler(service *ModelingService) *ModelingHandler {
 // GET /api/models/:id
 func (h *ModelingHandler) GetModelingInfo(c *gin.Context) {
 	ctx := c.Request.Context()
-	id := c.Param("id")
-	if id == "" {
-		util.RespondBadRequest(c, "Bad Request")
-		return
-	}
+	
+	// query parameter
+	title := c.Query("title")
+	address := c.Query("address")
+	category := c.Query("category")
 
-	m, err := h.service.GetModelingInfo(ctx, id)
+	// call service func
+	models, err := h.service.GetModelingInfo(ctx, title, address, category)
 	if err != nil {
 		util.RespondInternalError(c, err.Error())
 		return
 	}
 
-	util.RespondSuccess(c, m)
+	util.RespondSuccess(c, models)
 }
 
 // POST /api/users/3d
@@ -54,13 +55,26 @@ func (h *ModelingHandler) PostModelingInfo(c *gin.Context) {
 // DELETE /api/models/:id
 func (h *ModelingHandler) DeleteModelingInfo(c *gin.Context) {
 	ctx := c.Request.Context()
-	id := c.Param("id")
-	if id == "" {
-		util.RespondBadRequest(c, "Bad Request")
+
+	modelingID := c.Param("id")
+	if modelingID == "" {
+		util.RespondBadRequest(c, "Bad Request") //400 error
 		return
 	}
 
-	if err := h.service.DeleteModelingInfo(ctx, id); err != nil {
+	userID, err := util.ExtractUserIDFromJWT(c.Request)
+	if err != nil {
+		util.RespondUnauthorized(c, "Invaild token") // 401 error
+		return
+	}
+
+	// call service
+	err := h.service.DeleteModelingInfo(ctx, modelingID, userID)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			util.RespondNotFound(c, "Model not found or not authorized") // id는 잘 들어왔지만 model을 못찾았거나 로그인된 이용자의 id랑 맞지 않을 때
+			return
+		}
 		util.RespondInternalError(c, err.Error())
 		return
 	}
